@@ -66,5 +66,5 @@ Author
 
 .. _LogPy: http://github.com/logpy/logpy/
 .. _`Matthew Rocklin: http://matthewrocklin.com/
-.. |Build Status| image:: https://travis-ci.org/pytoolz/toolz.png
-   :target: https://travis-ci.org/pytoolz/toolz
+.. |Build Status| image:: https://travis-ci.org/mrocklin/unification.png
+   :target: https://travis-ci.org/mrocklin/unification
