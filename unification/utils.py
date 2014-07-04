@@ -110,7 +110,7 @@ def freeze(d):
     >>> freeze([1, 2])
     (1, 2)
 
-    >>> freeze({1: 2})
+    >>> freeze({1: 2}) # doctest: +SKIP
     frozenset([(1, 2)])
     """
     if isinstance(d, dict):
