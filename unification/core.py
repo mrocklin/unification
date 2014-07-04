@@ -3,7 +3,7 @@ from collections import Iterator
 from toolz.compatibility import iteritems, map
 from toolz import assoc
 
-from .util import transitive_get as walk
+from .utils import transitive_get as walk
 from .variable import Var, var, isvar
 from .dispatch import dispatch
 

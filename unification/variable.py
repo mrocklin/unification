@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from .util import hashable
+from .utils import hashable
 from .dispatch import dispatch
 
 _global_logic_variables = set()
