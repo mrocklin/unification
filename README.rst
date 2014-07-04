@@ -103,6 +103,18 @@ This patten matching can be fairly complex
 See full example in the examples directory.
 
 
+Performance and Reliability
+---------------------------
+
+This was hacked together.  Unification stresses extensibility over performance,
+preliminary benchmarks show that this is 2-5x slower than straight tuple-based
+unification.
+
+This is somewhat reliable, the only caveat is on set unification which is
+challenging to do generally within this framework.  It should work well in
+moderately complex cases but break down under very complex ones.
+
+
 History
 -------
 
