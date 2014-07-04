@@ -11,7 +11,7 @@ class Dispatcher(object):
 
     def add(self, signature, func):
         self.funcs[signature] = func
-        self.ordering = ordering(self.funcs)
+        self.ordering = ordering(self.funcs)[::-1]
 
     def __call__(self, *args, **kwargs):
         func = self.resolve(args)
@@ -63,9 +63,10 @@ def supercedes(a, b):
     if s is False:
         return False
     s = dict((k, v) for k, v in s.items() if not isvar(k) or not isvar(v))
-    print(s)
     if reify(a, s) == a:
         return True
+    if reify(b, s) == b:
+        return False
 
 
 # Taken from multipledispatch

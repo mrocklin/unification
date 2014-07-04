@@ -1,5 +1,5 @@
 from unification.match import *
-from unification.utils import raises
+from unification.utils import raises, xfail
 from unification.core import var
 
 def inc(x):
@@ -37,6 +37,7 @@ def test_complex():
     x = var('x')
     y = var('y')
 
+    d.add((1,), inc)
     d.add((x,), inc)
     d.add((x, 1), add)
     d.add((y, y), mul)
@@ -49,6 +50,15 @@ def test_complex():
     assert d(10, (10, 10)) == (10, (10, 10))
     assert raises(NotImplementedError, lambda : d(1, 2))
 
+
+def test_ordering():
+    x = var('x')
+    y = var('y')
+    o = ordering([(1,), (x,), (2,), (y,), (x, x), (1, x), (x, 1), (1, 2)])
+    print("Ordering:", o)
+
+    for a, b in zip(o, o[1:]):
+        assert supercedes(a, b) or not supercedes(b, a)
 
 
 def test_raises_error():
@@ -102,3 +112,9 @@ def test_supercedes():
     assert supercedes(x, y)
     assert supercedes((1, (x, 3)), (1, y))
     assert not supercedes((1, y), (1, (x, 3)))
+
+
+@xfail
+def test_supercedes_more():
+    x, y, z = var('x'), var('y'), var('z')
+    assert supercedes((1, x), (x, x))
