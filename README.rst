@@ -79,10 +79,35 @@ Unification supports function dispatch through pattern matching.
    [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 
 
+This patten matching can be fairly complex
+
+.. code-block:: python
+
+   name, amount = var('name'), var('amount')
+
+   @match({'status': 200, 'data': {'name': name, 'credit': amount}})
+   def respond(name, amount):
+       balance[name] +=  amount
+
+
+   @match({'status': 200, 'data': {'name': name, 'debit': amount}})
+   def respond(name, amount):
+       balance[name] -= amount
+
+
+   @match({'status': 404})
+   def respond():
+       print("Bad Request")
+
+
+See full example in the examples directory.
+
+
 History
 -------
 
 This was carved out from the LogPy_ and `Multiple Dispatch`_ projects.
+
 
 Author
 ------
