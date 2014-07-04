@@ -42,10 +42,11 @@ def test_unify_seq():
     assert unify((1, var(1)), (1, 2), {}) == {var(1): 2}
     assert unify((1, var(1)), (1, 2), {var(1): 3}) == False
 
-def test_unify_dict():
+def test_unify_set():
     x = var('x')
     assert unify(set((1, 2)), set((1, 2)), {}) == {}
     assert unify(set((1, x)), set((1, 2)), {}) == {x: 2}
+    assert unify(set((x, 2)), set((1, 2)), {}) == {x: 1}
 
 def test_unify_dict():
     assert unify({1: 2}, {1: 2}, {}) == {}

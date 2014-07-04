@@ -68,6 +68,9 @@ def _unify(u, v, s):
 
 @dispatch((set, frozenset), (set, frozenset), dict)
 def _unify(u, v, s):
+    i = u & v
+    u = u - i
+    v = v - i
     return _unify(sorted(u), sorted(v), s)
 
 
