@@ -50,3 +50,33 @@ def supercedes(a, b):
     s = dict((k, v) for k, v in s.items() if not isvar(k) or not isvar(v))
     if reify(a, s) == a:
         return True
+
+
+# Taken from multipledispatch
+def edge(a, b, tie_breaker=hash):
+    """ A should be checked before B
+
+    Tie broken by tie_breaker, defaults to ``hash``
+    """
+    if supercedes(a, b):
+        if supercedes(b, a):
+            return tie_breaker(a) > tie_breaker(b)
+        else:
+            return True
+    return False
+
+
+# Taken from multipledispatch
+def ordering(signatures):
+    """ A sane ordering of signatures to check, first to last
+
+    Topoological sort of edges as given by ``edge`` and ``supercedes``
+    """
+    signatures = list(map(tuple, signatures))
+    edges = [(a, b) for a in signatures for b in signatures if edge(a, b)]
+    edges = groupby(lambda x: x[0], edges)
+    for s in signatures:
+        if s not in edges:
+            edges[s] = []
+    edges = dict((k, [b for a, b in v]) for k, v in edges.items())
+    return _toposort(edges)
