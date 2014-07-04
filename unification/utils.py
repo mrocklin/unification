@@ -91,3 +91,11 @@ def reverse_dict(d):
         for val in d[key]:
             result[val] = result.get(val, tuple()) + (key, )
     return result
+
+
+def xfail(func):
+    try:
+        func()
+        raise Exception("XFailed test passed")
+    except:
+        pass
