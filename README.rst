@@ -1,7 +1,7 @@
 Unification
 ===========
 
-[![](https://travis-ci.org/logpy/unification.png)](https://travis-ci.org/logpy/unification)
+|Build Status|
 
 Straightforward Unification, extensible via dispatch.
 
@@ -66,3 +66,5 @@ Author
 
 .. _LogPy: http://github.com/logpy/logpy/
 .. _`Matthew Rocklin: http://matthewrocklin.com/
+.. |Build Status| image:: https://travis-ci.org/pytoolz/toolz.png
+   :target: https://travis-ci.org/pytoolz/toolz
