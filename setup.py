@@ -14,6 +14,7 @@ setup(name='unification',
       license='BSD',
       keywords='unification logic-programming dispatch',
       packages=['unification'],
+      install_requires=open('dependencies.txt').read().split('\n'),
       long_description=(open('README.rst').read() if exists('README.rst')
                         else ''),
       zip_safe=False)
