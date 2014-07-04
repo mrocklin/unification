@@ -1,5 +1,5 @@
-from logpy.unification import unify, reify, _unify, _reify
-from logpy import var
+from unification.core import unify, reify, _unify, _reify
+from unification import var
 
 def test_reify():
     x, y, z = var(), var(), var()

@@ -51,7 +51,6 @@ def variables(*variables):
     """ Context manager for logic variables
 
     >>> from __future__ import with_statement
-    >>> from logpy import variables, var, isvar
     >>> with variables(1):
     ...     print(isvar(1))
     True
@@ -61,15 +60,15 @@ def variables(*variables):
 
     Normal approach
 
-    >>> from logpy import run, eq
+    >>> from unification import unify
     >>> x = var('x')
-    >>> run(1, x, eq(x, 2))
-    (2,)
+    >>> unify(x, 1)
+    {~x: 1}
 
     Context Manager approach
     >>> with variables('x'):
-    ...     print(run(1, 'x', eq('x', 2)))
-    (2,)
+    ...     print(unify('x', 1))
+    {'x': 1}
     """
     old_global_logic_variables = _global_logic_variables.copy()
     _global_logic_variables.update(set(variables))
