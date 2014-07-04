@@ -82,7 +82,7 @@ Unification supports function dispatch through pattern matching.
 History
 -------
 
-This was carved out from the LogPy_ project.
+This was carved out from the LogPy_ and `Multiple Dispatch`_ projects.
 
 Author
 ------
@@ -91,6 +91,7 @@ Author
 
 
 .. _LogPy: http://github.com/logpy/logpy/
+.. _`Multiple Dispatch`: http://github.com/mrocklin/multipledispatch/
 .. _`Matthew Rocklin`: http://matthewrocklin.com/
 .. |Build Status| image:: https://travis-ci.org/mrocklin/unification.png
    :target: https://travis-ci.org/mrocklin/unification
