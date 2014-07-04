@@ -13,7 +13,7 @@ setup(name='unification',
       maintainer_email='mrocklin@gmail.com',
       license='BSD',
       keywords='unification logic-programming dispatch',
-      packages=['unification']
+      packages=['unification'],
       long_description=(open('README.rst').read() if exists('README.rst')
                         else ''),
       zip_safe=False)

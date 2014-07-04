@@ -2,6 +2,10 @@ from unification.match import *
 from unification.utils import raises, xfail
 from unification.core import var
 
+def identity(x):
+    return x
+
+
 def inc(x):
     return x + 1
 
@@ -49,6 +53,18 @@ def test_complex():
     assert d(10, 10) == 100
     assert d(10, (10, 10)) == (10, (10, 10))
     assert raises(NotImplementedError, lambda : d(1, 2))
+
+
+def test_dict():
+    d = Dispatcher('d')
+    x = var('x')
+    y = var('y')
+
+    d.add(({'x': x, 'key': 1},), identity)
+
+    d({'x': 1, 'key': 1}) == {'x': 1, 'key': 1}
+
+
 
 
 def test_ordering():
@@ -117,6 +133,7 @@ def test_supercedes():
 @xfail
 def test_supercedes_more():
     x, y, z = var('x'), var('y'), var('z')
+    assert supercedes((1, x), (y, y))
     assert supercedes((1, x), (x, x))
 
 
