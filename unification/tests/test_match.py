@@ -71,3 +71,14 @@ def test_register():
 
     assert d(1) == 10
     assert d(2) == 20
+
+
+def test_dispatcher():
+    @match(1)
+    def fib(x):
+        return 1
+
+    @match(0)
+    def fib(x):
+        return 0
+

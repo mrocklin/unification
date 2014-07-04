@@ -19,3 +19,22 @@ class Dispatcher(object):
             self.add(signature, func)
             return self
         return _
+
+
+global_namespace = dict()
+
+
+def match(*signature, **kwargs):
+    namespace = kwargs.get('namespace', global_namespace)
+    def _(func):
+        name = func.__name__
+
+        if name not in namespace:
+            namespace[name] = Dispatcher(name)
+        dispatcher = namespace[name]
+
+        dispatcher.add(signature, func)
+
+        return dispatcher
+    return _
+
