@@ -1,19 +1,34 @@
 from .core import unify, reify
 from .variable import var, isvar
+from .utils import _toposort
+from toolz import groupby, first
 
 class Dispatcher(object):
     def __init__(self, name):
         self.name = name
         self.funcs = dict()
+        self.ordering = []
 
     def add(self, signature, func):
         self.funcs[signature] = func
+        self.ordering = ordering(self.funcs)
 
     def __call__(self, *args, **kwargs):
-        for k, v in self.funcs.items():
-            if unify(k, args) != False:
-                return v(*args, **kwargs)
-        raise NotImplementedError("No match found")
+        func = self.resolve(args)
+        return func(*args, **kwargs)
+
+    def resolve(self, args):
+        if args in self.funcs:
+            return self.funcs[args]
+
+        n = len(args)
+        for signature in self.ordering:
+            if len(signature) == n and unify(args, signature):
+                result = self.funcs[signature]
+                return result
+        raise NotImplementedError("No match found.")
+
+
 
     def register(self, *signature):
         def _(func):
@@ -48,6 +63,7 @@ def supercedes(a, b):
     if s is False:
         return False
     s = dict((k, v) for k, v in s.items() if not isvar(k) or not isvar(v))
+    print(s)
     if reify(a, s) == a:
         return True
 
@@ -74,7 +90,7 @@ def ordering(signatures):
     """
     signatures = list(map(tuple, signatures))
     edges = [(a, b) for a in signatures for b in signatures if edge(a, b)]
-    edges = groupby(lambda x: x[0], edges)
+    edges = groupby(first, edges)
     for s in signatures:
         if s not in edges:
             edges[s] = []

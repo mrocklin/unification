@@ -39,7 +39,7 @@ def test_complex():
 
     d.add((x,), inc)
     d.add((x, 1), add)
-    d.add((x, x), mul)
+    d.add((y, y), mul)
     d.add((x, (x, x)), foo)
 
     assert d(1) == 2
@@ -74,6 +74,7 @@ def test_register():
 
 
 def test_dispatcher():
+    x = var('x')
     @match(1)
     def fib(x):
         return 1
@@ -81,6 +82,13 @@ def test_dispatcher():
     @match(0)
     def fib(x):
         return 0
+
+    @match(x)
+    def fib(n):
+        return fib(n - 1) + fib(n - 2)
+
+    assert [fib(i) for i in range(10)] == \
+            [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 
 
 def test_supercedes():
