@@ -58,7 +58,6 @@ seq = tuple, list, Iterator
 
 @dispatch(seq, seq, dict)
 def _unify(u, v, s):
-    # assert isinstance(u, tuple) and isinstance(v, tuple)
     if len(u) != len(v):
         return False
     for uu, vv in zip(u, v):  # avoiding recursion
@@ -67,10 +66,13 @@ def _unify(u, v, s):
             return False
     return s
 
+@dispatch((set, frozenset), (set, frozenset), dict)
+def _unify(u, v, s):
+    return _unify(sorted(u), sorted(v), s)
+
 
 @dispatch(dict, dict, dict)
 def _unify(u, v, s):
-    # assert isinstance(u, dict) and isinstance(v, dict)
     if len(u) != len(v):
         return False
     for key, uval in iteritems(u):
