@@ -11,24 +11,23 @@ class Dispatcher(object):
 
     def add(self, signature, func):
         self.funcs[signature] = func
-        self.ordering = ordering(self.funcs)[::-1]
+        self.ordering = ordering(self.funcs)
 
     def __call__(self, *args, **kwargs):
-        func = self.resolve(args)
+        func, s = self.resolve(args)
         return func(*args, **kwargs)
 
     def resolve(self, args):
-        if args in self.funcs:
-            return self.funcs[args]
-
         n = len(args)
         for signature in self.ordering:
-            if len(signature) == n and unify(args, signature):
+            if len(signature) != n:
+                continue
+            s = unify(args, signature)
+            if s is not False:
                 result = self.funcs[signature]
-                return result
-        raise NotImplementedError("No match found.")
-
-
+                return result, s
+        raise NotImplementedError("No match found. \nKnown matches: "
+                + str(self.ordering) + "\nInput: " + str(args))
 
     def register(self, *signature):
         def _(func):
@@ -36,22 +35,50 @@ class Dispatcher(object):
             return self
         return _
 
+class VarDispatcher(Dispatcher):
+    """ A dispatcher that calls functions with variable names
+
+    >>> d = VarDispatcher('d')
+    >>> x = var('x')
+
+    >>> @d.register('inc', x)
+    ... def f(x):
+    ...     return x + 1
+
+    >>> @d.register('double', x)
+    ... def f(x):
+    ...     return x * 2
+
+    >>> d('inc', 10)
+    11
+
+    >>> d('double', 10)
+    20
+    """
+    def __call__(self, *args, **kwargs):
+        func, s = self.resolve(args)
+        d = dict((k.token, v) for k, v in s.items())
+        return func(**d)
+
+
+
 
 global_namespace = dict()
 
 
 def match(*signature, **kwargs):
     namespace = kwargs.get('namespace', global_namespace)
+    dispatcher = kwargs.get('Dispatcher', Dispatcher)
     def _(func):
         name = func.__name__
 
         if name not in namespace:
-            namespace[name] = Dispatcher(name)
-        dispatcher = namespace[name]
+            namespace[name] = dispatcher(name)
+        d = namespace[name]
 
-        dispatcher.add(signature, func)
+        d.add(signature, func)
 
-        return dispatcher
+        return d
     return _
 
 

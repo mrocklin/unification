@@ -118,3 +118,20 @@ def test_supercedes():
 def test_supercedes_more():
     x, y, z = var('x'), var('y'), var('z')
     assert supercedes((1, x), (x, x))
+
+
+def test_VarDispatcher():
+    d = VarDispatcher('d')
+    x, y, z = var('x'), var('y'), var('z')
+
+    @d.register(x, y)
+    def swap(y, x):
+        return y, x
+
+    assert d(1, 2) == (2, 1)
+
+    @d.register((1, z), 2)
+    def foo(z):
+        return z
+
+    assert d((1, 3), 2) == 3
