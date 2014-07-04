@@ -52,6 +52,32 @@ Examples
     False,
     False]
 
+Function Dispatch
+-----------------
+
+Unification supports function dispatch through pattern matching.
+
+
+.. code-block:: python
+
+   from unification.match import *
+
+   n = var('n')
+   @match(0)
+   def fib(n):
+       return 0
+
+   @match(1)
+   def fib(n):
+       return 1
+
+   @match(n)
+   def fib(n):
+       return fib(n - 1) + fib(n - 2)
+
+   >>> map(fib, [0, 1, 2, 3, 4, 5, 6, 7, 8, 0])
+   [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+
 
 History
 -------
@@ -65,6 +91,6 @@ Author
 
 
 .. _LogPy: http://github.com/logpy/logpy/
-.. _`Matthew Rocklin: http://matthewrocklin.com/
+.. _`Matthew Rocklin`: http://matthewrocklin.com/
 .. |Build Status| image:: https://travis-ci.org/mrocklin/unification.png
    :target: https://travis-ci.org/mrocklin/unification
