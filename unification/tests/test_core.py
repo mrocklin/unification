@@ -44,8 +44,8 @@ def test_unify_seq():
 
 def test_unify_dict():
     x = var('x')
-    assert unify({1, 2}, {1, 2}, {}) == {}
-    assert unify({1, x}, {1, 2}, {}) == {x: 2}
+    assert unify(set((1, 2)), set((1, 2)), {}) == {}
+    assert unify(set((1, x)), set((1, 2)), {}) == {x: 2}
 
 def test_unify_dict():
     assert unify({1: 2}, {1: 2}, {}) == {}
