@@ -1,5 +1,5 @@
 from unification.more import (unify_object, reify_object,
-        reify_object_attrs, unify_object_attrs, unifiable)
+        unifiable)
 from unification import var, variables
 from unification.core import unify, reify, _unify, _reify
 
@@ -56,37 +56,6 @@ def test_unify_slice():
 def test_reify_slice():
     x = var('x')
     assert reify(slice(1, var(2), 3), {var(2): 10}) == slice(1, 10, 3)
-
-
-def test_unify_object_attrs():
-    x, y = var('x'), var('y')
-    f, g = Foo(1, 2), Foo(x, y)
-    assert unify_object_attrs(f, g, {}, ['a']) == {x: 1}
-    assert unify_object_attrs(f, g, {}, ['b']) == {y: 2}
-    assert unify_object_attrs(f, g, {}, []) == {}
-
-
-def test_reify_object_attrs():
-    x, y = var('x'), var('y')
-    f, g = Foo(1, 2), Foo(x, y)
-    s = {x: 1, y: 2}
-    assert reify_object_attrs(g, s, ['a', 'b']) == f
-    assert reify_object_attrs(g, s, ['a']) ==  Foo(1, y)
-    assert reify_object_attrs(g, s, ['b']) ==  Foo(x, 2)
-    assert reify_object_attrs(g, s, []) is g
-
-
-def test_unify_isinstance_list():
-    class Foo2(Foo): pass
-    x = var('x')
-    y = var('y')
-    f, g = Foo2(1, 2), Foo2(x, y)
-
-    _unify.add((Foo, Foo, dict), unify_object)
-    _reify.add((Foo, dict), reify_object)
-
-    assert unify(f, g, {})
-    assert reify(g, {x: 1, y: 2}) == f
 
 
 @unifiable
