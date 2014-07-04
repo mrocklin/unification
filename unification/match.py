@@ -1,4 +1,5 @@
-from .core import unify
+from .core import unify, reify
+from .variable import var, isvar
 
 class Dispatcher(object):
     def __init__(self, name):
@@ -38,3 +39,14 @@ def match(*signature, **kwargs):
         return dispatcher
     return _
 
+
+def supercedes(a, b):
+    """ ``a`` is a more specific match than ``b`` """
+    if isvar(b) and not isvar(a):
+        return True
+    s = unify(a, b)
+    if s is False:
+        return False
+    s = dict((k, v) for k, v in s.items() if not isvar(k) or not isvar(v))
+    if reify(a, s) == a:
+        return True

@@ -82,3 +82,15 @@ def test_dispatcher():
     def fib(x):
         return 0
 
+
+def test_supercedes():
+    x, y, z = var('x'), var('y'), var('z')
+    assert not supercedes(1, 2)
+    assert supercedes(1, x)
+    assert not supercedes(x, 1)
+    assert supercedes((1, 2), (1, x))
+    assert not supercedes((1, x), (1, 2))
+    assert supercedes((1, x), (y, z))
+    assert supercedes(x, y)
+    assert supercedes((1, (x, 3)), (1, y))
+    assert not supercedes((1, y), (1, (x, 3)))
