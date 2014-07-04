@@ -1,5 +1,6 @@
 from unification.match import *
 from unification.utils import raises
+from unification.core import var
 
 def inc(x):
     return x + 1
@@ -7,6 +8,18 @@ def inc(x):
 
 def dec(x):
     return x - 1
+
+
+def add(x, y):
+    return x + y
+
+
+def mul(x, y):
+    return x * y
+
+
+def foo(*args):
+    return args
 
 
 def test_simple():
@@ -17,6 +30,25 @@ def test_simple():
 
     assert d(1) == 2
     assert d(10) == 9
+
+
+def test_complex():
+    d = Dispatcher('d')
+    x = var('x')
+    y = var('y')
+
+    d.add((x,), inc)
+    d.add((x, 1), add)
+    d.add((x, x), mul)
+    d.add((x, (x, x)), foo)
+
+    assert d(1) == 2
+    assert d(2) == 3
+    assert d(2, 1) == 3
+    assert d(10, 10) == 100
+    assert d(10, (10, 10)) == (10, (10, 10))
+    assert raises(NotImplementedError, lambda : d(1, 2))
+
 
 
 def test_raises_error():
