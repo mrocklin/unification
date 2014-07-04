@@ -1,28 +1,8 @@
 from .core import unify, reify
 from .variable import var, isvar
-from .utils import _toposort
+from .utils import _toposort, freeze
 from toolz import groupby, first
 
-
-def freeze(d):
-    """ Freeze container to hashable form
-
-    >>> freeze(1)
-    1
-
-    >>> freeze([1, 2])
-    (1, 2)
-
-    >>> freeze({1: 2})
-    frozenset([(1, 2)])
-    """
-    if isinstance(d, dict):
-        return frozenset(map(freeze, d.items()))
-    if isinstance(d, set):
-        return frozenset(map(freeze, d))
-    if isinstance(d, (tuple, list)):
-        return tuple(map(freeze, d))
-    return d
 
 class Dispatcher(object):
     def __init__(self, name):
@@ -47,7 +27,6 @@ class Dispatcher(object):
             if s is not False:
                 result = self.funcs[signature]
                 return result, s
-        print(freeze(args))
         raise NotImplementedError("No match found. \nKnown matches: "
                 + str(self.ordering) + "\nInput: " + str(args))
 
