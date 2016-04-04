@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from unification.more import (unify_object, reify_object,
         unifiable)
 from unification import var, variables
@@ -32,6 +34,17 @@ def test_reify_object():
     f = Foo(1, 2)
     assert reify_object(f, {}) is f
 
+def test_reify_slots():
+    SlotsObject = namedtuple('SlotsObject', ['myattr'])
+    class SlotsObject(object):
+        __slots__ = ['myattr']
+        def __init__(self, myattr):
+            self.myattr = myattr
+    x = var()
+    s = {x: 1}
+    e = SlotsObject(x)
+    assert reify_object(e, s), SlotsObject(1)
+    assert reify_object(SlotsObject(1), s), SlotsObject(1)
 
 def test_objects_full():
     _unify.add((Foo, Foo, dict), unify_object)
