@@ -35,11 +35,12 @@ def test_reify_object():
     assert reify_object(f, {}) is f
 
 def test_reify_slots():
-    SlotsObject = namedtuple('SlotsObject', ['myattr'])
+
     class SlotsObject(object):
         __slots__ = ['myattr']
         def __init__(self, myattr):
             self.myattr = myattr
+
     x = var()
     s = {x: 1}
     e = SlotsObject(x)
