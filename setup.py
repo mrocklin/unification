@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
-from os.path import exists
+from os.path import exists, join
 import re
 from setuptools import setup
 
-contents = re.findall(
+version = re.findall(
     r'__version__ = \'([.0-9]+)\'',
-    open('unification/__init__.py', 'r').read())[0]
+    open(join('unification', '__init__.py'), 'r').read())[0]
 
 setup(name='unification',
-      version=contents,
+      version=version,
       description='Unification',
       url='http://github.com/mrocklin/unification/',
       author='https://raw.github.com/mrocklin/unification/master/AUTHORS.md',
