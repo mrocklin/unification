@@ -24,10 +24,6 @@ def transitive_get(key, d):
     return key
 
 
-def dicthash(d):
-    return hash(frozenset(d.items()))
-
-
 def raises(err, lamda):
     try:
         lamda()
@@ -96,7 +92,7 @@ def reverse_dict(d):
 def xfail(func):
     try:
         func()
-        raise Exception("XFailed test passed")
+        raise Exception("XFailed test passed")  # pragma:nocover
     except:
         pass
 

@@ -52,6 +52,7 @@ def test_unify_dict():
     assert unify({1: 2}, {1: 2}, {}) == {}
     assert unify({1: 2}, {1: 3}, {}) == False
     assert unify({2: 2}, {1: 2}, {}) == False
+    assert unify({2: 2, 3: 3}, {1: 2}, {}) == False
     assert unify({1: var(5)}, {1: 2}, {}) == {var(5): 2}
 
 def test_unify_complex():
