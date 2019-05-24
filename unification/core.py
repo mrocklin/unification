@@ -1,5 +1,5 @@
 from functools import partial
-from collections import Iterator
+from collections.abc import Iterator
 from toolz.compatibility import iteritems, map
 from toolz import assoc
 
